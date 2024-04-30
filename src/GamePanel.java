@@ -90,6 +90,20 @@ public class GamePanel extends JPanel
                 g.drawRect(LEFT_MARGIN + CELL_SIZE * c, TOP_MARGIN + CELL_SIZE * r, CELL_SIZE, CELL_SIZE);
                 // draw numbers
                 if (myGrid[r][c] > 0) {
+                    if ((r + c) % 2 == 0)
+                        g.setColor(new Color(0,200, 0));
+                    else
+                        g.setColor(new Color(0, 96, 0));
+                    g.fillRect(LEFT_MARGIN + c * CELL_SIZE + 2, TOP_MARGIN + r * CELL_SIZE + 2,
+                            CELL_SIZE-4, CELL_SIZE-4);
+                    if ((r + c) % 2 == 0)
+                        g.setColor(Color.LIGHT_GRAY);
+                    else
+                        g.setColor(Color.DARK_GRAY);
+                    int size = (CELL_SIZE-4)*(100-myGrid[r][c])/100;
+                    g.fillRect(LEFT_MARGIN + c * CELL_SIZE + CELL_SIZE/2 - size/2,
+                               TOP_MARGIN + r * CELL_SIZE + CELL_SIZE/2 - size/2,
+                            size, size);
                     g.setColor(Color.GRAY);
                     g.setFont(myFont);
                     int width = g.getFontMetrics(myFont).stringWidth("" + myGrid[r][c]);
@@ -158,6 +172,7 @@ public class GamePanel extends JPanel
         scores[move.getWhichPlayerIsMoving()]+=move.getWhatIsPickedUp();
         playerPositions[move.getWhichPlayerIsMoving()] = move.getDestinationPos();
         myGrid[move.getDestinationPos()[0]][move.getDestinationPos()[1]] = 0;
+        changeRewardsBy(-1);
     }
 
     /**
@@ -169,7 +184,16 @@ public class GamePanel extends JPanel
     {
         scores[move.getWhichPlayerIsMoving()]-=move.getWhatIsPickedUp();
         playerPositions[move.getWhichPlayerIsMoving()] = move.getStartPos();
+        changeRewardsBy(+1);
         myGrid[move.getDestinationPos()[0]][move.getDestinationPos()[1]] = move.getWhatIsPickedUp();
+    }
+
+    public void changeRewardsBy(int n)
+    {
+        for (int r=0; r< myGrid.length; r++)
+            for (int c=0; c<myGrid[0].length; c++)
+                if (myGrid[r][c] != 0)
+                    myGrid[r][c] += n;
     }
 
     /**
