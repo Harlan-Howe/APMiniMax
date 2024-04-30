@@ -243,9 +243,12 @@ public class GamePanel extends JPanel
             parent.updateIndicator(-1);
             repaint();
         }
-        parent.activateArrows(checkForPossibleHumanMoves());
-        parent.updateIndicator(HUMAN);
-        repaint();
+        else
+        {
+            parent.activateArrows(checkForPossibleHumanMoves());
+            parent.updateIndicator(HUMAN);
+            repaint();
+        }
     }
 
     /**
